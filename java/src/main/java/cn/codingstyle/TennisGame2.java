@@ -1,3 +1,4 @@
+package cn.codingstyle;
 
 public class TennisGame2 implements TennisGame
 {

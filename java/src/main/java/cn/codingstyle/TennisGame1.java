@@ -14,35 +14,47 @@ public class TennisGame1 implements TennisGame {
     }
 
     public String getScore() {
-        String result = "";
-
-        if (player1Points == player2Points) {
-            switch (player1Points) {
-                case 0:
-                    result = "Love-All";
-                    break;
-                case 1:
-                    result = "Fifteen-All";
-                    break;
-                case 2:
-                    result = "Thirty-All";
-                    break;
-                default:
-                    result = "Deuce";
-                    break;
-
-            }
-        } else if (player1Points >= 4 || player2Points >= 4) // end game
-        {
-            int minusResult = player1Points - player2Points;
-            if (minusResult == 1) result = "Advantage player1";
-            else if (minusResult == -1) result = "Advantage player2";
-            else if (minusResult >= 2) result = "Win for player1";
-            else result = "Win for player2";
-        } else {
-            result = getScoreName(player1Points) + "-" + getScoreName(player2Points);
+        if (getPointsDiff() == 0) {
+            return getEvenScore(player1Points);
         }
-        return result;
+        if (isReached4Points()) {
+            return getEndGameScore();
+        }
+        return getScoreName(player1Points) + "-" + getScoreName(player2Points);
+    }
+
+    private boolean isReached4Points() {
+        return player1Points >= 4 || player2Points >= 4;
+    }
+
+    private String getEndGameScore() {
+        if (getPointsDiff() == 1) {
+            return "Advantage " + leadingPlayerName();
+        }
+        return "Win for " + leadingPlayerName();
+
+    }
+
+    private int getPointsDiff() {
+        return Math.abs(player1Points - player2Points);
+    }
+
+    private String leadingPlayerName() {
+        return player1Points > player2Points ? "player1" : "player2";
+    }
+
+    private String getEvenScore(int points) {
+        if (points == 0) {
+            return "Love-All";
+        }
+        if (points == 1) {
+            return "Fifteen-All";
+        }
+        if (points == 2) {
+            return "Thirty-All";
+        }
+        return "Deuce";
+
     }
 
     private String getScoreName(int points) {
